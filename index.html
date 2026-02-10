@@ -11,9 +11,9 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: 'Comic Sans MS', cursive;
-            overflow: hidden;
             margin: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
         }
         .container {
             text-align: center;
@@ -22,35 +22,34 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border: 5px solid #ff4d6d;
-            max-width: 400px;
+            width: 320px;
             position: relative;
         }
-        h1 { color: #ff4d6d; }
+        h1 { color: #ff4d6d; font-size: 24px; }
         .buttons {
-            margin-top: 20px;
+            margin-top: 30px;
             display: flex;
             justify-content: center;
             gap: 20px;
             height: 50px;
         }
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 12px 25px;
+            font-size: 1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.3s;
             font-weight: bold;
         }
         #yesBtn { background-color: #ff4d6d; color: white; }
         #noBtn { 
             background-color: #ccc; 
-            color: white;
+            color: white; 
             position: absolute; 
             transition: 0.1s;
         }
         .hidden { display: none !important; }
-        img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+        img { width: 180px; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -72,7 +71,7 @@
         <div id="page2" class="hidden">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmtuM3ZndXp2N3R4eXo0eXo0eXo0eXo0eXo0eXo0eXo0eXo0ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/26hpKz78Y6I6NlXyM/giphy.gif">
             <h1>OMG, you said yes! ❤️</h1>
-            <p>I'm so grateful for you every day.</p>
+            <p>Can this love be translated?</p>
         </div>
     </div>
 
@@ -80,7 +79,6 @@
         const noBtn = document.getElementById('noBtn');
         const music = document.getElementById('bgMusic');
 
-        // Logic for the running "NO" button
         function moveButton() {
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -88,13 +86,10 @@
             noBtn.style.top = y + 'px';
         }
 
-        // Logic to switch pages and start the song
         function nextPage() {
             document.getElementById('page1').classList.add('hidden');
             document.getElementById('page2').classList.remove('hidden');
-            
-            // This plays your "Do Ra-mi" song
-            music.play().catch(e => console.log("Audio play deferred until interaction"));
+            music.play().catch(e => console.log("Audio started"));
         }
     </script>
 </body>

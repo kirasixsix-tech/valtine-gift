@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <audio id="bgMusic" loop>
+            <source src="theme-song.mp3" type="audio/mpeg">
+        </audio>
+
+        <div id="card">
+            <div id="page1">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v87TfLoU58jQGq7uM8/giphy.gif" alt="Cute character">
+                <h1>Rachel, will you be my Valentine?</h1>
+                <div class="buttons">
+                    <button id="yesBtn" onclick="nextPage()">YES</button>
+                    <button id="noBtn" onmouseover="moveButton()">NO</button>
+                </div>
+            </div>
+
+            <div id="page2" class="hidden">
+                <h1>OMG, you said yes! ❤️</h1>
+                <p>I'm so grateful for you every day.</p>
+                <div class="photo-placeholder">
+                    <img src="your-photo.jpg" alt="Us" style="width:100%; border-radius:10px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+const noBtn = document.getElementById('noBtn');
+const music = document.getElementById('bgMusic');
+
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+}
+
+function nextPage() {
+    document.getElementById('page1').classList.add('hidden');
+    document.getElementById('page2').classList.remove('hidden');
+    
+    // Start music on first interaction (browser requirement)
+    music.play();
+}
+body {
+    background-color: #ffdeeb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 5px solid #ff4d6d;
+    max-width: 400px;
+}
+
+h1 { color: #ff4d6d; }
+
+.buttons {
+    margin-top: 20px;
+    position: relative;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#yesBtn { background-color: #ff4d6d; color: white; }
+#noBtn { background-color: #ccc; position: absolute; }
+
+.hidden { display: none; }

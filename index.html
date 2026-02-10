@@ -40,49 +40,51 @@
             z-index: 10;
         }
 
-        h1 { color: #ff4d6d; font-size: 22px; min-height: 60px; }
+        h1 { color: #ff4d6d; font-size: 22px; min-height: 80px; margin-top: 15px; }
         .buttons { margin-top: 20px; display: flex; justify-content: center; gap: 20px; height: 50px; }
         
         button {
-            padding: 10px 25px;
+            padding: 12px 25px;
             font-size: 1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
+            transition: transform 0.2s;
         }
 
-        #yesBtn { background-color: #ff4d6d; color: white; }
+        #yesBtn { background-color: #ff4d6d; color: white; position: relative; z-index: 101; }
         #noBtn { 
             background-color: #ccc; 
             color: white; 
             position: absolute; 
-            transition: 0.15s;
+            transition: all 0.2s ease;
         }
 
         .hidden { display: none !important; }
-        img { width: 200px; height: 200px; object-fit: contain; border-radius: 10px; }
+        img { width: 220px; height: 200px; object-fit: contain; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <audio id="yesMusic" loop><source src="Do Ra-mi in Three.mp3" type="audio/mpeg"></audio>
-        <audio id="noMusic" loop><source src="love language.mp3" type="audio/mpeg"></audio>
+        <audio id="noMusic" loop><source src="Do Ra-mi in Three.mp3" type="audio/mpeg"></audio>
+        
+        <audio id="yesMusic" loop><source src="love language.mp3" type="audio/mpeg"></audio>
 
         <div id="page1">
             <img id="mainImg" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v87TfLoU58jQGq7uM8/giphy.gif">
             <h1 id="mainText">Rachel, will you be my Valentine?</h1>
             <div class="buttons">
                 <button id="yesBtn" onclick="nextPage()">YES</button>
-                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">NO</button>
+                <button id="noBtn" onmouseover="handleNo()" onclick="handleNo()">NO</button>
             </div>
         </div>
 
         <div id="page2" class="hidden">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmtuM3ZndXp2N3R4eXo0eXo0eXo0eXo0eXo0eXo0eXo0eXo0ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/26hpKz78Y6I6NlXyM/giphy.gif">
             <h1>OMG, you said yes! ❤️</h1>
-            <p style="color: #ff4d6d;">Forever Together!</p>
+            <p style="color: #ff4d6d; font-weight: bold;">I love you so much!</p>
         </div>
     </div>
 
@@ -92,29 +94,42 @@
         const noMusic = document.getElementById('noMusic');
         const mainImg = document.getElementById('mainImg');
         const mainText = document.getElementById('mainText');
+        const yesBtn = document.getElementById('yesBtn');
 
         let noCount = 0;
         const sadImages = [
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/OPU6wUKARA8AU/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/7SF5scGB2AFrO/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/BEob5zFkS7LWQ/giphy.gif"
+            "https://media.giphy.com/media/OPU6wUKARA8AU/giphy.gif",
+            "https://media.giphy.com/media/7SF5scGB2AFrO/giphy.gif",
+            "https://media.giphy.com/media/BEob5zFkS7LWQ/giphy.gif",
+            "https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif"
         ];
-        const sadTexts = ["Please??", "I'll be so sad...", "Think about it again!"];
+        
+        const sadTexts = [
+            "Please be my Valentine??", 
+            "I'll be so sad...", 
+            "Think about it again!", 
+            "You left me no choice! Click YES!"
+        ];
 
-        function moveButton() {
-            // Start the "NO" song
+        function handleNo() {
+            // Start "Do Ra-mi" while she is playing hard to get
             if (noMusic.paused) {
                 noMusic.play().catch(e => console.log("Music play blocked"));
             }
 
-            // Change image and text to be sadder
+            // Guilt-trip: Change image/text and make YES button bigger
             if (noCount < sadImages.length) {
                 mainImg.src = sadImages[noCount];
                 mainText.innerText = sadTexts[noCount];
+                
+                let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+                yesBtn.style.fontSize = (currentSize * 1.2) + "px";
+                yesBtn.style.padding = (currentSize * 0.8) + "px " + (currentSize * 1.5) + "px";
+                
                 noCount++;
             }
 
-            // Move button
+            // Move the NO button
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             noBtn.style.left = x + 'px';
@@ -122,11 +137,14 @@
         }
 
         function nextPage() {
-            noMusic.pause(); // Stop the NO music
+            noMusic.pause(); // Stop "Do Ra-mi"
             document.getElementById('page1').classList.add('hidden');
             document.getElementById('page2').classList.remove('hidden');
-            yesMusic.play(); // Play the YES music
-            setInterval(createHeart, 300); // Start falling hearts
+            
+            yesMusic.play(); // Play "love language" as the victory song
+            
+            // Start the falling hearts celebration
+            setInterval(createHeart, 300);
         }
 
         function createHeart() {

@@ -15,71 +15,106 @@
             font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
+
+        /* Falling Hearts Animation */
+        .heart {
+            position: fixed;
+            top: -10px;
+            color: #ff4d6d;
+            font-size: 20px;
+            user-select: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(105vh); } }
+
         .container {
             text-align: center;
             background: white;
-            padding: 40px;
+            padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border: 5px solid #ff4d6d;
             width: 320px;
             position: relative;
+            z-index: 10;
         }
-        h1 { color: #ff4d6d; font-size: 24px; }
-        .buttons {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            height: 50px;
-        }
+
+        h1 { color: #ff4d6d; font-size: 22px; min-height: 60px; }
+        .buttons { margin-top: 20px; display: flex; justify-content: center; gap: 20px; height: 50px; }
+        
         button {
-            padding: 12px 25px;
+            padding: 10px 25px;
             font-size: 1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
         }
+
         #yesBtn { background-color: #ff4d6d; color: white; }
         #noBtn { 
             background-color: #ccc; 
             color: white; 
             position: absolute; 
-            transition: 0.1s;
+            transition: 0.15s;
         }
+
         .hidden { display: none !important; }
-        img { width: 180px; margin-bottom: 10px; border-radius: 10px; }
+        img { width: 200px; height: 200px; object-fit: contain; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <audio id="bgMusic" loop>
-            <source src="Do Ra-mi in Three.mp3" type="audio/mpeg">
-        </audio>
+        <audio id="yesMusic" loop><source src="Do Ra-mi in Three.mp3" type="audio/mpeg"></audio>
+        <audio id="noMusic" loop><source src="love language.mp3" type="audio/mpeg"></audio>
 
         <div id="page1">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v87TfLoU58jQGq7uM8/giphy.gif">
-            <h1>Rachel, will you be my Valentine?</h1>
+            <img id="mainImg" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v87TfLoU58jQGq7uM8/giphy.gif">
+            <h1 id="mainText">Rachel, will you be my Valentine?</h1>
             <div class="buttons">
                 <button id="yesBtn" onclick="nextPage()">YES</button>
-                <button id="noBtn" onmouseover="moveButton()">NO</button>
+                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">NO</button>
             </div>
         </div>
 
         <div id="page2" class="hidden">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmtuM3ZndXp2N3R4eXo0eXo0eXo0eXo0eXo0eXo0eXo0eXo0ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/26hpKz78Y6I6NlXyM/giphy.gif">
             <h1>OMG, you said yes! ❤️</h1>
-            <p>Can this love be translated?</p>
+            <p style="color: #ff4d6d;">Forever Together!</p>
         </div>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
-        const music = document.getElementById('bgMusic');
+        const yesMusic = document.getElementById('yesMusic');
+        const noMusic = document.getElementById('noMusic');
+        const mainImg = document.getElementById('mainImg');
+        const mainText = document.getElementById('mainText');
+
+        let noCount = 0;
+        const sadImages = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/OPU6wUKARA8AU/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/7SF5scGB2AFrO/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpYmZpJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/BEob5zFkS7LWQ/giphy.gif"
+        ];
+        const sadTexts = ["Please??", "I'll be so sad...", "Think about it again!"];
 
         function moveButton() {
+            // Start the "NO" song
+            if (noMusic.paused) {
+                noMusic.play().catch(e => console.log("Music play blocked"));
+            }
+
+            // Change image and text to be sadder
+            if (noCount < sadImages.length) {
+                mainImg.src = sadImages[noCount];
+                mainText.innerText = sadTexts[noCount];
+                noCount++;
+            }
+
+            // Move button
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             noBtn.style.left = x + 'px';
@@ -87,9 +122,21 @@
         }
 
         function nextPage() {
+            noMusic.pause(); // Stop the NO music
             document.getElementById('page1').classList.add('hidden');
             document.getElementById('page2').classList.remove('hidden');
-            music.play().catch(e => console.log("Audio started"));
+            yesMusic.play(); // Play the YES music
+            setInterval(createHeart, 300); // Start falling hearts
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
         }
     </script>
 </body>

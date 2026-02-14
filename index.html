@@ -6,9 +6,8 @@
     <title>Will You Be My Valentine?</title>
     <style>
         :root {
-            --primary-pink: #ffafbd;
-            --heart-red: #ff4b6e;
-            --text-color: #4a4a4a;
+            --heart-color: #ff4b6e;
+            --bg-grad: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
         }
 
         body {
@@ -18,18 +17,31 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-grad);
+            font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
             overflow: hidden;
+        }
+
+        /* The Scalloped Border from your video */
+        .border-frame {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            border: 15px solid var(--heart-color);
+            box-sizing: border-box;
+            z-index: 100;
+            mask-image: radial-gradient(circle, transparent 70%, black 71%);
+            -webkit-mask-image: radial-gradient(circle, transparent 70%, black 71%);
+            background-size: 40px 40px;
         }
 
         .container {
             width: 85%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.98);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 350px;
+            background: white;
+            padding: 40px 20px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             text-align: center;
             position: relative;
             z-index: 10;
@@ -37,23 +49,43 @@
 
         .hidden { display: none; }
 
-        .gif-container {
-            width: 100%;
-            height: 180px;
+        /* CSS HEART ANIMATION (Replaces the GIF) */
+        .heart-wrapper {
+            margin-bottom: 30px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
         }
 
-        .doodle-img {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 12px;
+        .css-heart {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background-color: var(--heart-color);
+            transform: rotate(-45deg);
+            animation: pulse 1.2s infinite;
         }
 
-        h1, h2 { font-size: 1.3rem; color: var(--text-color); line-height: 1.4; }
+        .css-heart::before, .css-heart::after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: var(--heart-color);
+            border-radius: 50%;
+        }
 
+        .css-heart::before { top: -40px; left: 0; }
+        .css-heart::after { left: 40px; top: 0; }
+
+        @keyframes pulse {
+            0% { transform: rotate(-45deg) scale(1); }
+            50% { transform: rotate(-45deg) scale(1.2); }
+            100% { transform: rotate(-45deg) scale(1); }
+        }
+
+        h1 { font-size: 1.4rem; color: #444; margin: 20px 0; }
+
+        /* Buttons */
         .btn-group {
             display: flex;
             justify-content: center;
@@ -62,117 +94,96 @@
         }
 
         .btn {
-            padding: 12px 28px;
+            padding: 12px 25px;
             border: none;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
             font-size: 1rem;
         }
 
-        #yesBtn { background-color: var(--heart-red); color: white; }
-        #noBtn { background-color: #f0f0f0; color: #888; position: relative; }
-        
-        .icon-btn { 
-            background: #fff; 
-            border: 2px solid #ffeef0; 
-            font-size: 1.8rem; 
-            width: 70px; 
-            height: 70px; 
+        #yesBtn { background: var(--heart-color); color: white; box-shadow: 0 4px 15px rgba(255, 75, 110, 0.3); }
+        #noBtn { background: #eee; color: #777; }
+
+        .icon-btn {
+            font-size: 2rem;
+            background: #fff5f6;
+            border: 2px solid #ffdae0;
+            width: 70px;
+            height: 70px;
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
         }
 
         .back-btn {
-            background: #eee;
-            color: #666;
+            background: transparent;
+            color: #999;
+            text-decoration: underline;
             font-size: 0.8rem;
-            margin-top: 25px;
-            padding: 8px 15px;
-        }
-
-        .flower-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
+            margin-top: 30px;
+            border: none;
+            cursor: pointer;
         }
 
         .flower-item {
-            font-size: 0.7rem;
             background: #fff5f6;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #ffcad4;
-        }
-
-        /* Scalloped Border */
-        .scallop-border {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            border: 12px solid #ff4b6e;
-            box-sizing: border-box;
-            z-index: 5;
-            mask-image: radial-gradient(circle, transparent 70%, black 71%); /* Optional effect */
+            margin: 5px;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            border: 1px dashed var(--heart-color);
         }
     </style>
 </head>
 <body>
 
-    <div class="scallop-border"></div>
+    <div class="border-frame"></div>
 
     <div id="step1" class="container">
-        <div class="gif-container">
-            <img src="https://media.tenor.com/9v6v9vX9_m8AAAAi/milk-and-mocha-love.gif" alt="Cute hearts" class="doodle-img">
+        <div class="heart-wrapper">
+            <div class="css-heart"></div>
         </div>
         <h1>Paing, will you be my valentine?</h1>
         <div class="btn-group">
-            <button class="btn" id="yesBtn" onclick="sayYes()">YES</button>
-            <button class="btn" id="noBtn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
+            <button class="btn" id="yesBtn" onclick="handleYes()">YES</button>
+            <button class="btn" id="noBtn" onmouseover="moveNo()">NO</button>
         </div>
     </div>
 
     <div id="step2" class="container hidden">
-        <div class="gif-container">
-            <img src="https://media.tenor.com/6S30v6B8mngAAAAi/peach-goma-peach-and-goma.gif" alt="Happy dance" class="doodle-img">
+        <div class="heart-wrapper">
+            <div class="css-heart" style="transform: rotate(-45deg) scale(0.6);"></div>
         </div>
-        <h2>OMG, you said yes! ❤️</h2>
+        <h1>OMG, you said yes! ❤️</h1>
         <div class="btn-group">
-            <button class="btn icon-btn" onclick="showSection('forever')">🏠</button>
-            <button class="btn icon-btn" onclick="showSection('words')">✉️</button>
-            <button class="btn icon-btn" onclick="showSection('flowers')">🎁</button>
+            <button class="icon-btn" onclick="showPage('forever')">🏠</button>
+            <button class="icon-btn" onclick="showPage('words')">✉️</button>
+            <button class="icon-btn" onclick="showPage('flowers')">🎁</button>
         </div>
-        <button class="btn back-btn" onclick="showSection('step1')">← Go Back</button>
+        <button class="back-btn" onclick="showPage('step1')">Back to start</button>
     </div>
 
     <div id="forever" class="container hidden">
-        <h3>FOREVER TOGETHER</h3>
-        <p>You're my favorite person in the whole world. I'm so lucky to have you!</p>
-        <button class="btn back-btn" onclick="showSection('step2')">Back to Menu</button>
+        <h2>FOREVER TOGETHER</h2>
+        <p>I can't wait to spend forever making memories with you.</p>
+        <button class="btn" id="yesBtn" onclick="showPage('step2')">Back</button>
     </div>
 
     <div id="words" class="container hidden">
-        <h3>WORDS FROM MY HEART</h3>
-        <p style="font-size: 0.85rem; line-height: 1.6; text-align: left;">
-            My love, every day with you feels warmer and brighter. Thank you for the laughs, the late nights, and the quiet moments. I'm so grateful for you. Always.
+        <h2>FROM MY HEART</h2>
+        <p style="text-align: left; font-size: 0.9rem; line-height: 1.5;">
+            My love, you make every day brighter. I'm so lucky to have you in my life. Thank you for being you!
         </p>
-        <button class="btn back-btn" onclick="showSection('step2')">Back to Menu</button>
+        <button class="btn" id="yesBtn" onclick="showPage('step2')">Back</button>
     </div>
 
     <div id="flowers" class="container hidden">
-        <h3>FLOWERS FOR MY LOVE</h3>
-        <div class="flower-grid">
-            <div class="flower-item">I think about you every daisy 🌼</div>
-            <div class="flower-item">My heart rose when I saw you 🌹</div>
-            <div class="flower-item">I love you bunches 💐</div>
-            <div class="flower-item">I will never leaf you 🍃</div>
-        </div>
-        <button class="btn back-btn" onclick="showSection('step2')">Back to Menu</button>
+        <h2>FOR YOU</h2>
+        <div class="flower-item">I think about you every daisy 🌼</div>
+        <div class="flower-item">My heart rose when I saw you 🌹</div>
+        <div class="flower-item">I love you bunches 💐</div>
+        <button class="btn" id="yesBtn" style="margin-top:10px" onclick="showPage('step2')">Back</button>
     </div>
 
     <audio id="yesMusic" src="love language.mp3" loop></audio>
@@ -182,25 +193,27 @@
         const yesMusic = document.getElementById('yesMusic');
         const noMusic = document.getElementById('noMusic');
 
-        function sayYes() {
-            showSection('step2');
+        function handleYes() {
+            showPage('step2');
             noMusic.pause();
             yesMusic.play().catch(() => {});
         }
 
-        function showSection(id) {
-            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+        function showPage(id) {
+            document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
         }
 
         function moveNo() {
             const btn = document.getElementById('noBtn');
             if (noMusic.paused) noMusic.play().catch(() => {});
+            
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.position = "fixed";
-            btn.style.left = x + "px";
-            btn.style.top = y + "px";
+            
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
         }
     </script>
 </body>

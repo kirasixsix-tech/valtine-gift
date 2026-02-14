@@ -21,15 +21,14 @@
             background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
-            background-image: url('https://www.transparenttextures.com/patterns/heart-light.png');
         }
 
         /* Container & Cards */
         .container {
-            width: 90%;
-            max-width: 500px;
-            background: white;
-            padding: 30px;
+            width: 85%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
@@ -39,60 +38,78 @@
 
         .hidden { display: none; }
 
-        /* Graphics */
+        /* Graphics - Using more stable placeholder images */
         .doodle-img {
-            width: 150px;
-            margin-bottom: 20px;
+            width: 160px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 10px;
         }
 
-        h1 { font-size: 1.5rem; color: var(--text-color); margin-bottom: 25px; }
+        h1, h2 { font-size: 1.4rem; color: var(--text-color); margin-bottom: 20px; }
 
         /* Buttons */
         .btn-group {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 12px 25px;
             border: none;
             border-radius: 25px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
             font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #yesBtn { background-color: #ff4b6e; color: white; }
+        #yesBtn { background-color: var(--heart-red); color: white; }
         #noBtn { background-color: #e0e0e0; color: #666; position: relative; }
+        
+        .nav-btn { background-color: #fff; border: 1px solid #eee; font-size: 1.5rem; width: 60px; height: 60px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .back-btn { background: #f0f0f0; color: #555; font-size: 0.8rem; margin-top: 20px; padding: 8px 20px; }
 
         /* Flower Grid */
         .flower-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
             text-align: left;
         }
 
         .flower-item {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             background: #fff0f3;
-            padding: 8px;
+            padding: 10px;
             border-radius: 10px;
             border: 1px dashed var(--heart-red);
         }
 
-        .main-bouquet { width: 100px; margin: 10px auto; }
+        .main-bouquet { width: 80px; margin-bottom: 10px; }
 
-        /* Responsive Heart Border */
+        /* Scalloped Heart Border */
         .heart-border {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            border: 15px solid transparent;
-            border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23ff4b6e'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") 30% round;
+            border: 10px solid #ff4b6e;
+            box-sizing: border-box;
+            z-index: 5;
+        }
+        .heart-border::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 5px solid white;
+            border-style: dotted;
         }
     </style>
 </head>
@@ -101,11 +118,11 @@
     <div class="heart-border"></div>
 
     <div id="step1" class="container">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueXFmZ3Z3bm96bm96bm96bm96bm96bm96bm96bm96bm96JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/26BRv0ThflsHCq_68/giphy.gif" alt="Doodle" class="doodle-img">
-        <h1>Rachel, will you be my valentine?</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bm96bm96bm96bm96bm96bm96bm96bm96bm96bm96JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v4aDR05QvovfK5qB14/giphy.gif" alt="Doodle" class="doodle-img">
+        <h1>Paing, will you be my valentine?</h1>
         <div class="btn-group">
             <button class="btn" id="yesBtn" onclick="sayYes()">YES</button>
-            <button class="btn" id="noBtn" onmouseover="moveNo()">NO</button>
+            <button class="btn" id="noBtn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
         </div>
     </div>
 
@@ -113,24 +130,25 @@
         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXA0YmU3bm96bm96bm96bm96bm96bm96bm96bm96bm96JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L40p3S3U9k3S7b5Q5/giphy.gif" class="doodle-img">
         <h2>OMG, you said yes!</h2>
         <div class="btn-group">
-            <button class="btn" onclick="showSection('forever')">🏠</button>
-            <button class="btn" onclick="showSection('words')">✉️</button>
-            <button class="btn" onclick="showSection('flowers')">🎁</button>
+            <button class="btn nav-btn" onclick="showSection('forever')">🏠</button>
+            <button class="btn nav-btn" onclick="showSection('words')">✉️</button>
+            <button class="btn nav-btn" onclick="showSection('flowers')">🎁</button>
         </div>
+        <button class="btn back-btn" onclick="showSection('step1')">← Go Back</button>
     </div>
 
     <div id="forever" class="container hidden">
         <h3>FOREVER TOGETHER</h3>
         <p>We've shared so many special memories together, and I can't wait to create more!</p>
-        <button class="btn" onclick="showSection('step2')">Back</button>
+        <button class="btn back-btn" onclick="showSection('step2')">Back to Menu</button>
     </div>
 
     <div id="words" class="container hidden">
         <h3>WORDS FROM MY HEART</h3>
-        <p style="font-size: 0.9rem; line-height: 1.5;">
-            My love, I just wanted to remind you how much you mean to me. Every day with you feels warmer, brighter, and a little more magical. Thank you for the laughs and the quiet moments. I'm so grateful for you. Always.
+        <p style="font-size: 0.85rem; line-height: 1.6; text-align: left;">
+            My love, I just wanted to remind you how much you mean to me. Every day with you feels warmer, brighter, and a little more magical. Thank you for the laughs, the late nights, and the quiet moments in between. I'm so grateful for you.
         </p>
-        <button class="btn" onclick="showSection('step2')">Back</button>
+        <button class="btn back-btn" onclick="showSection('step2')">Back to Menu</button>
     </div>
 
     <div id="flowers" class="container hidden">
@@ -142,11 +160,10 @@
             <div class="flower-item">I love you bunches</div>
             <div class="flower-item">I will never leaf you</div>
         </div>
-        <br>
-        <button class="btn" onclick="showSection('step2')">Back</button>
+        <button class="btn back-btn" onclick="showSection('step2')">Back to Menu</button>
     </div>
 
-    <audio id="yesMusic" src="love language.mp3"></audio>
+    <audio id="yesMusic" src="love language.mp3" loop></audio>
     <audio id="noMusic" src="Do Ra-mi in Three.mp3"></audio>
 
     <script>
@@ -154,25 +171,22 @@
         const noMusic = document.getElementById('noMusic');
 
         function sayYes() {
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.remove('hidden');
+            showSection('step2');
             noMusic.pause();
-            yesMusic.play();
+            noMusic.currentTime = 0;
+            yesMusic.play().catch(e => console.log("Audio play blocked by browser"));
         }
 
         function showSection(id) {
-            // Hide all containers
             document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
-            // Show the one we want
             document.getElementById(id).classList.remove('hidden');
         }
 
         function moveNo() {
             const btn = document.getElementById('noBtn');
-            // Play the "No" music once it's hovered
             if (noMusic.paused) noMusic.play();
             
-            // Make the button jump away
+            // Move button to random position
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             
